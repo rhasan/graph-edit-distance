@@ -27,23 +27,23 @@
 	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/httpclient-4.2.3.jar"/>
 	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/httpcore-4.2.2.jar"/>
 	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jcl-over-slf4j-1.6.4.jar"/>
-	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-arq-2.11.0.jar" sourcepath="/jena-arq">
+	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-arq-2.11.0.jar" sourcepath="/home/hrakebul/Downloads/jena/apache-jena-2.11.0/lib-src/jena-arq-2.11.0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/home/hrakebul/Downloads/jena/apache-jena-2.11.0/javadoc-arq/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-core-2.11.0.jar" sourcepath="/jena-core">
+	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-core-2.11.0.jar" sourcepath="/home/hrakebul/Downloads/jena/apache-jena-2.11.0/lib-src/jena-core-2.11.0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/hrakebul/workspace/graph-edit-distance/lib/javadoc-core.jar!/javadoc-core/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-iri-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-sdb-1.4.0.jar">
+	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-iri-1.0.0.jar" sourcepath="/home/hrakebul/Downloads/jena/apache-jena-2.11.0/lib-src/jena-iri-1.0.0-sources.jar"/>
+	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-sdb-1.4.0.jar" sourcepath="/home/hrakebul/Downloads/jena/apache-jena-2.11.0/lib-src/jena-sdb-1.4.0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/home/hrakebul/Downloads/jena/apache-jena-2.11.0/javadoc-sdb/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-tdb-1.0.0.jar">
+	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/jena-tdb-1.0.0.jar" sourcepath="/home/hrakebul/Downloads/jena/apache-jena-2.11.0/lib-src/jena-tdb-1.0.0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/home/hrakebul/Downloads/jena/apache-jena-2.11.0/javadoc-tdb/"/>
 		</attributes>
