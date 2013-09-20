@@ -1,9 +1,17 @@
 package semanticweb;
 
+import ged.AlgorithmConfig;
+
 import java.io.ObjectInputStream.GetField;
+import java.util.concurrent.TimeUnit;
+
+import javax.naming.OperationNotSupportedException;
+
+import com.google.common.base.Stopwatch;
 
 import algorithms.BipartiteMatching;
 
+import semanticweb.sparql.SparqlUtils;
 import util.CostFunction;
 import util.EditDistance;
 import util.Graph;
@@ -72,6 +80,11 @@ public class RDFGraphMatching {
 		this.editDistance = new EditDistance(this.undirected, this.outputEditpath);
 		
 	}	
+	
+	/**
+	 * Returns the cost funtion for RDF graph edit distance
+	 * @return the cost funtion for RDF graph edit distance
+	 */
 	
 	public CostFunction getRDFGraphCostFunction() {
 		
@@ -155,16 +168,36 @@ public class RDFGraphMatching {
 				edgeCostTypes, edgeAttrImportance, squareRootNodeCosts,
 				multiplyNodeCosts, squareRootEdgeCosts, multiplyEdgeCosts, nodeCostMu, nodeCostNu);			
 	}
+	/**
+	 * Distance between two GXL graphs using A* 
+	 * @param sourceGraph graph 1 
+	 * @param targetGraph  graph 2
+	 * @return distance
+	 */
 	
 	public double distanceAStar(Graph sourceGraph,Graph targetGraph) {
 		return this.editDistance.getEditDistance(
 				sourceGraph, targetGraph, this.costFunction, Integer.MAX_VALUE);	
 	}
+	/**
+	 * Distance between two GXL graphs using A*-beam
+	 * @param sourceGraph graph 1
+	 * @param targetGraph graph 2
+	 * @param s size of the beam
+	 * @return distance
+	 */
 	
 	public double distanceAStarBeam(Graph sourceGraph,Graph targetGraph,int s) {
 		return this.editDistance.getEditDistance(
 				sourceGraph, targetGraph, this.costFunction,s);	
 	}
+	
+	/**
+	 * Distance between two GXL graphs using Bipartite Hungarian
+	 * @param sourceGraph graph 1
+	 * @param targetGraph graph 2
+	 * @return distance
+	 */
 	
 	public double distanceBipartiteHungarian(Graph sourceGraph,Graph targetGraph) {
 		
@@ -183,6 +216,14 @@ public class RDFGraphMatching {
 				sourceGraph, targetGraph, matching, costFunction);
 		return d;
 	}
+	
+	/**
+	 * Distance between two GXL graphs using Bipartite VolgenantJonker
+	 * @param sourceGraph graph 1
+	 * @param targetGraph graph 2
+	 * @return distance
+	 */	
+	
 	public double distanceBipartiteVolgenantJonker(Graph sourceGraph,Graph targetGraph) {
 		
 		if (sourceGraph.size()<targetGraph.size()){
@@ -202,27 +243,96 @@ public class RDFGraphMatching {
 	}
 	
 	/**
+	 * 
+	 * @param q1 SPARQL query string for query 1
+	 * @param q2 SPARQL query string for query 2
+	 * @param algorithmConfig algorithm configuration {@link AlgorithmConfig}
+	 * @return graph edit distance between query graph of query 1 and query graph of query 2
+	 * @throws Exception 
+	 */
+	public double queryGraphDistance(String q1, String q2, AlgorithmConfig algorithmConfig) throws Exception {
+		
+		Graph g1 = SparqlUtils.buildSPARQL2GXLGraph(q1, "1");
+		Graph g2 = SparqlUtils.buildSPARQL2GXLGraph(q2, "2");
+
+		
+		if(algorithmConfig.isAStarBeam())
+			return distanceAStarBeam(g1, g2, algorithmConfig.getBeamSize());
+		if(algorithmConfig.isBipartiteHungarian())
+			return distanceBipartiteHungarian(g1, g2);
+		if(algorithmConfig.isBipartiteVolgenantJonker())
+			return distanceBipartiteVolgenantJonker(g1, g2);
+		
+		throw new OperationNotSupportedException("Supported algorithms: A*-beam search, Bipartite Hungarian, and Bipartite VolgenantJonker");
+	}
+		
+	
+	/**
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
 
+		Graph g1 = RDF2GXL.readRDF("data/vc-db-1.rdf");
+		Graph g2 = RDF2GXL.readRDF("data/vc-db-2.rdf");
+		
+		Stopwatch stopwatch = new Stopwatch();
+		long millis = 0;
+		
 		RDFGraphMatching matcher = new RDFGraphMatching();
-		Graph g1 = RDF2GXL.getTestGXLGraph();
-		Graph g2 = RDF2GXL.getTestGXLGraph1();
-		double aStar = matcher.distanceAStar(g1, g2);
-		System.out.println("A*: "+aStar);
-		
-		int s = 2;
-		double aStarBeam = matcher.distanceAStarBeam(g1, g2, s);
-		System.out.println("A*-beam (s="+s+"): "+aStarBeam);
-		
-		double hungarian = matcher.distanceBipartiteHungarian(g1, g2);
-		System.out.println("Bipartite Hungarian: "+hungarian);
 
 		
+		
+		
+		System.out.println("Graph 1 size: "+g1.size());
+		System.out.println("Graph 2 size: "+g2.size());
+		
+		
+		System.out.println("--------------------------------------");
+		stopwatch.reset();
+		stopwatch.start();
+		double hungarian = matcher.distanceBipartiteHungarian(g1, g2);
+		stopwatch.stop();
+		millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+		System.out.println("Bipartite Hungarian: "+hungarian);
+		System.out.println("Execution time: "+millis+" milliseconds");
+
+		
+		System.out.println("--------------------------------------");
+		stopwatch.reset();
+		stopwatch.start();
 		double vj = matcher.distanceBipartiteVolgenantJonker(g1, g2);
-		System.out.println("Bipartite VolgenantJonker: "+vj);		
+		stopwatch.stop();
+		millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+		System.out.println("Bipartite VolgenantJonker: "+vj);
+		System.out.println("Execution time: "+millis+" milliseconds");
+
+		
+		System.out.println("--------------------------------------");
+		int s = 10;
+		stopwatch.reset();
+		stopwatch.start();
+		double aStarBeam = matcher.distanceAStarBeam(g1, g2, s);
+		stopwatch.stop();
+		millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+		
+		System.out.println("A*-beam (s="+s+"): "+aStarBeam);
+		System.out.println("Execution time: "+millis+" milliseconds");
+		
+		/*
+		System.out.println("--------------------------------------");
+		stopwatch.reset();
+		stopwatch.start();
+		
+		double aStar = matcher.distanceAStar(g1, g2);
+		stopwatch.stop();
+		millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+
+		System.out.println("A*: "+aStar);
+		System.out.println("Execution time: "+millis+" milliseconds");
+		*/
+		
+	
 	}
 
 }
