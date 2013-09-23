@@ -1,27 +1,15 @@
 package semanticweb.sparql;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 
 import org.apache.jena.atlas.logging.Log;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 
 import ged.AlgorithmConfig;
 import semanticweb.RDFGraphMatching;
+import utils.Utils;
 
 public class QDistanceVolgenantJonker {
-	
-	//http://stackoverflow.com/a/326440
-	public static String readFile(String path, Charset encoding)
-			throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
-	}
+
 	
 	public static void error() {
 		System.out.println("--help for help");
@@ -39,8 +27,8 @@ public class QDistanceVolgenantJonker {
 	
 	public static void file(String file1, String file2) throws Exception {
 		//System.out.println("Processing files "+file1+" and "+file2);
-		String q1 = readFile(file1, StandardCharsets.UTF_8);
-		String q2 = readFile(file2, StandardCharsets.UTF_8);
+		String q1 = Utils.readFile(file1);
+		String q2 = Utils.readFile(file2);
 		//System.out.println(q1);
 		//System.out.println(q2);
 		System.out.println(distance(q1, q2));

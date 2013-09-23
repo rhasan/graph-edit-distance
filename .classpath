@@ -53,5 +53,10 @@
 	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/slf4j-log4j12-1.6.4.jar"/>
 	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="/home/hrakebul/workspace/graph-edit-distance/lib/commons-io-2.4.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/hrakebul/workspace/graph-edit-distance/lib/commons-io-2.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
