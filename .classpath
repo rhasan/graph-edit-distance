@@ -58,5 +58,6 @@
 			<attribute name="javadoc_location" value="jar:file:/home/hrakebul/workspace/graph-edit-distance/lib/commons-io-2.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

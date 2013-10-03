@@ -34,6 +34,7 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.sparql.core.TriplePath;
 import com.hp.hpl.jena.sparql.syntax.Element;
 import com.hp.hpl.jena.sparql.syntax.ElementPathBlock;
+import com.hp.hpl.jena.sparql.syntax.ElementSubQuery;
 import com.hp.hpl.jena.sparql.syntax.ElementTriplesBlock;
 import com.hp.hpl.jena.sparql.syntax.ElementVisitorBase;
 import com.hp.hpl.jena.sparql.syntax.ElementWalker;
@@ -53,7 +54,8 @@ public class SparqlUtils {
 		final Set<Triple> allTriples = new HashSet<Triple>();
 	
         // Parse
-        Query query = QueryFactory.create(s) ;
+        final Query query = QueryFactory.create(s) ;
+        
         Element e = query.getQueryPattern();
         
         // This will walk through all parts of the query
@@ -87,6 +89,21 @@ public class SparqlUtils {
                     	
                     }
                     
+                	
+                }
+                
+                public void visit(ElementSubQuery el) {
+                	
+                	
+                	Query sQuery = el.getQuery();
+                	//System.out.println("Subquery:"+sQuery.serialize());
+                	sQuery.setPrefixMapping(query.getPrefixMapping());
+                	String sQueryStr = el.getQuery().serialize();
+                	
+                	
+                	Set<Triple> triples = retrieveTriples(sQueryStr);
+                	//System.out.println(triples.size());
+                	allTriples.addAll(triples);
                 	
                 }
             }

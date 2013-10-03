@@ -254,7 +254,9 @@ public class RDFGraphMatching {
 		
 		Graph g1 = SparqlUtils.buildSPARQL2GXLGraph(q1, "1");
 		Graph g2 = SparqlUtils.buildSPARQL2GXLGraph(q2, "2");
-
+		//System.out.println(g1.toString());
+		//System.out.println(g2.toString());
+		
 		
 		if(algorithmConfig.isAStarBeam())
 			return distanceAStarBeam(g1, g2, algorithmConfig.getBeamSize());
